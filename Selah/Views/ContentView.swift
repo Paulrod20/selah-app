@@ -27,7 +27,7 @@ struct ContentView: View {
         // iPhone → full-screen list, taps push to detail
         // One layout, three behaviors. No wrappers needed.
         NavigationSplitView {
-            SidebarView(entries: entries, selectedEntry: $selectedEntry)
+            SidebarView(entries: entries, selection: $selectedEntry)
         } detail: {
             EditorView(entry: selectedEntry)
         }
