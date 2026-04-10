@@ -14,7 +14,7 @@ struct SidebarView: View {
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {
-        List(entries, selection: $selection) { entry in
+        List(selection: $selection) {
             ForEach(entries) { entry in
                 Text(entry.title.isEmpty ? "Untitled" : entry.title)
                     .tag(entry) // tells List which item this row represents
@@ -54,6 +54,9 @@ struct SidebarView: View {
     
     private func deleteEntry(offsets: IndexSet) {
         for index in offsets {
+            if selection == entries[index] {
+                selection = nil
+            }
             modelContext.delete(entries[index])
         }
     }
