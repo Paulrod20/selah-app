@@ -8,9 +8,26 @@
 import SwiftUI
 
 struct EditorView: View {
-    let entry: JournalEntry?
+    @Bindable var entry: JournalEntry
     
     var body: some View {
-        Text(entry?.title ?? "Select an entry")
+        VStack(alignment: .leading, spacing: 0) {
+            // Title field
+            TextField("Title", text: $entry.title)
+                .font(.title)
+                .fontWeight(.semibold)
+                .padding(.horizontal)
+                .padding(.top)
+            
+            Divider()
+                .padding(.vertical, 8)
+            
+            // Body field
+            TextField("What are you feeling?", text: $entry.body, axis: .vertical)
+                .font(.body)
+                .padding(.horizontal)
+            
+            Spacer()
+        }
     }
 }

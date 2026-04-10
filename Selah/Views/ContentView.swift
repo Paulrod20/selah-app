@@ -29,7 +29,21 @@ struct ContentView: View {
         NavigationSplitView {
             SidebarView(entries: entries, selection: $selectedEntry)
         } detail: {
-            EditorView(entry: selectedEntry)
+            if let entry = selectedEntry {
+                EditorView(entry: entry)
+            } else {
+                VStack(spacing: 8) {
+                    Text(Constants.Verses.emptyStateVerse)
+                        .multilineTextAlignment(.center)
+                    
+                    Text(Constants.Verses.emptyStateVerseReference)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+                .font(.title3)
+                .foregroundStyle(.tertiary)
+                .padding(40)
+                .frame(maxWidth: 500)
+            }
         }
     }
 }
