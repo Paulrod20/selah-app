@@ -13,6 +13,10 @@ struct EditorView: View {
     @FocusState private var isTitleFocused: Bool
     @Environment(\.modelContext) private var modelContext
     
+    private var wordCount: Int {
+        entry.body.split(separator: " ").count
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Title field
@@ -27,12 +31,28 @@ struct EditorView: View {
                     .font(.title)
                     .fontWeight(.semibold)
                     .focused($isTitleFocused)
+                    .onChange(of: entry.title) {
+                        entry.updatedAt = .now
+                    }
             }
             .padding(.horizontal)
             .padding(.top)
 
             Divider()
                 .padding(.vertical, 8)
+            
+            // Metadata row
+            HStack(spacing: 4) {
+                Text(entry.createdAt.formatted(date: .long, time: .omitted))
+                Text("•")
+                Text("\(wordCount) words")
+                Text("•")
+                Text("Edited \(entry.updatedAt.formatted(.relative(presentation: .named)))")
+            }
+            .font(.caption)
+            .foregroundStyle(.tertiary)
+            .padding(.horizontal)
+            .padding(.bottom, 8)
 
             // Body field
             ZStack(alignment: .topLeading) {
@@ -43,6 +63,9 @@ struct EditorView: View {
                 }
                 TextField("", text: $entry.body, axis: .vertical)
                     .font(.body)
+                    .onChange(of: entry.body) {
+                        entry.updatedAt = .now
+                    }
             }
             .padding(.horizontal)
 

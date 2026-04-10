@@ -16,8 +16,25 @@ struct SidebarView: View {
     var body: some View {
         List(selection: $selection) {
             ForEach(entries) { entry in
-                Text(entry.title.isEmpty ? "Untitled" : entry.title)
-                    .tag(entry) // tells List which item this row represents
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(entry.title.isEmpty ? "Untitled" : entry.title)
+                        .font(.body)
+                        .fontWeight(.medium)
+                        .lineLimit(1)
+                    
+                    HStack(spacing: 4) {
+                        Text(entry.createdAt.formatted(date: .abbreviated, time: .omitted))
+                        
+                        if !entry.body.isEmpty {
+                            Text("•")
+                            Text(entry.body)
+                                .lineLimit(1)
+                        }
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                }
+                .tag(entry)
             }
             .onDelete(perform: deleteEntry)
         }
