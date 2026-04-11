@@ -12,30 +12,39 @@ struct ContentView: View {
     @Query private var entries: [JournalEntry]
     @Environment(\.modelContext) private var modelContext
     @State private var selectedEntry: JournalEntry?
-    @State private var selectedTab: Tab = .journal
-    
+
     var body: some View {
-        NavigationSplitView {
-            //Sidebar changes based on active tab
-            switch selectedTab {
-            case .journal:
-                SidebarView(entries: entries, selection: $selectedEntry)
-            case .bible:
-                Text("Bible Sidebar")
-            case .stats:
-                EmptyView()
+        TabView {
+            TabSection("Journal") {
+                Tab("All Entries", systemImage: "square.grid.2x2") {
+                    JournalView()
+                }
+                ForEach(entries) { entry in
+                    Tab(entry.title.isEmpty ? "Untitled" : entry.title, systemImage: "doc.text") {
+                        EditorView(entry: entry)
+                    }
+                }
             }
-        } detail: {
-            ZStack(alignment: .bottom) {
-                // Main content area
-                Color.clear
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-                // Pill tab bar floating at the bottom
-                PillTabBar(selectedTab: $selectedTab)
-                    .padding(.bottom, 24)
+
+            TabSection("Bible") {
+                Tab("Bookmarks", systemImage: "bookmark") {
+                    Text("Bookmarks coming soon")
+                }
+                Tab("Highlights", systemImage: "highlighter") {
+                    Text("Highlights coming soon")
+                }
+                Tab("Notes", systemImage: "note.text") {
+                    Text("Bible notes coming soon")
+                }
+            }
+
+            TabSection("Stats") {
+                Tab("Overview", systemImage: "chart.bar") {
+                    Text("Stats coming soon")
+                }
             }
         }
+        .tabViewStyle(.sidebarAdaptable)
     }
 }
 
