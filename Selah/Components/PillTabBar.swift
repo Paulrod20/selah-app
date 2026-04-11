@@ -1,10 +1,3 @@
-//
-//  PillTabBar.swift
-//  Selah
-//
-//  Created by Paul Rodriguez on 4/9/26.
-//
-
 import SwiftUI
 
 struct PillTabBar: View {
@@ -35,7 +28,7 @@ struct PillTabBar: View {
                 .background {
                     if selectedTab == tab {
                         Capsule()
-                            .fill(.ultraThinMaterial)
+                            .fill(.white.opacity(0.25))
                             .matchedGeometryEffect(id: "pill", in: tabAnimation)
                     }
                 }
@@ -46,5 +39,8 @@ struct PillTabBar: View {
 }
 
 #Preview {
-    PillTabBar(selectedTab: .constant(.journal))
+    ZStack {
+        Color.gray.opacity(0.2).ignoresSafeArea()
+        PillTabBar(selectedTab: .constant(.journal))
+    }
 }
