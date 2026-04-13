@@ -12,6 +12,8 @@ struct JournalView: View {
     @Query private var entries: [JournalEntry]
     @Environment(\.modelContext) private var modelContext
     
+    private var selectedTheme: Theme = .frosted
+    
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -21,11 +23,14 @@ struct JournalView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
+                selectedTheme.background
+                    .ignoresSafeArea()
+                
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(entries) { entry in
                             NavigationLink(destination: EditorView(entry: entry)) {
-                                JournalCardView(entry: entry)
+                                JournalCardView(entry: entry, theme: selectedTheme)
                             }
                             .buttonStyle(.plain)
                         }

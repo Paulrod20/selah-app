@@ -8,21 +8,24 @@
 import SwiftUI
 
 struct JournalCardView: View {
-    let entry : JournalEntry
+    let entry: JournalEntry
+    let theme: Theme
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 12) {
             Text(entry.createdAt.formatted(date: .abbreviated, time: .omitted))
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(theme.secondaryText)
             
             Text(entry.title.isEmpty ? "Untitled" : entry.title)
                 .font(.headline)
                 .lineLimit(2)
+                .foregroundStyle(theme.secondaryText)
             
             Text(entry.body.isEmpty ? " " : entry.body)
                 .font(.headline)
                 .lineLimit(4)
+                .foregroundStyle(theme.secondaryText)
             
             Spacer()
         }
