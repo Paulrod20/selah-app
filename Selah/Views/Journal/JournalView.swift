@@ -6,9 +6,49 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct JournalView: View {
+    @Query private var entries: [JournalEntry]
+    @Environment(\.modelContext) private var modelContext
+    
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
     var body: some View {
-        Text("Card grid coming soon")
+        NavigationStack {
+            ZStack(alignment: .bottomTrailing) {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(entries) { entry in
+                            NavigationLink(destination: EditorView(entry: entry)) {
+                                JournalCardView(entry: entry)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding()
+                }
+                
+                //Pencil button - journal tab only
+                Button(action: createEntry) {
+                    Image(systemName: "square.and.pencil")
+                        .font(.title2)
+                        .padding()
+                        .background(.thinMaterial)
+                        .clipShape(Circle())
+                }
+                .padding(24)
+            }
+            .navigationTitle(("Journal"))
+        }
+    }
+    
+    private func createEntry() {
+        let entry = JournalEntry()
+        modelContext.insert(entry)
     }
 }
