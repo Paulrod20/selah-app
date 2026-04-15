@@ -27,9 +27,9 @@ struct ContentView: View {
             }
 
             TabSection("Bible") {
-                Tab("Scratchpad", systemImage: "pencil") {
-                    Text("Scratchpad coming soon")
-                }
+                Tab("Read", systemImage: "book.pages") {
+                        BibleView()
+                    }
                 
                 Tab("Bookmarks", systemImage: "bookmark") {
                     Text("Bookmarks coming soon")
